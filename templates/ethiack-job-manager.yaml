@@ -1,0 +1,69 @@
+# CI/CD component for integrating Ethiack's Job Manager in GitLab CI/CD pipelines.
+#
+# Requirements:
+# - CI/CD variables named ETHIACK_API_SECRET and ETHIACK_API_KEY saved in the project CI/CD settings.
+#   The values should be the API secret and API key, respectively, provided in Ethiack's Portal.
+#
+# For more information, see https://github.com/ethiack/gitlab-cicd-component and https://github.com/ethiack/job-manager.
+#
+
+spec:
+    inputs:
+        stage:
+            type: string
+            description: The stage to run.
+        command:
+            type: string
+            description: The command to run.
+            options: ["launch", "cancel", "info", "list", "status", "success", "await", "check"]
+        uuid:
+            type: string
+            default: ""
+            description: The UUID of the job. Required for commands "cancel", "info", "status", "success", and "await".
+        url:
+            type: string
+            default: ""
+            description: The URL of the target service. Required for commands "launch", and "check".
+        args:
+            type: string
+            default: ""
+            description: The arguments to pass to the job.
+
+---
+
+ethiack-job-manager:
+    image: docker.io/python:3.11-slim
+    stage: $[[ inputs.stage ]]
+    script:
+        # Setup Pipx
+        - echo "[ETHIACK-JOB-MANAGER] Setting up environment...."
+        - python3 -m pip install --upgrade pip
+        - python3 -m pip install --user --upgrade pipx
+        - python3 -m pipx ensurepath
+        - export PATH="/root/.local/bin:$PATH"
+        - pipx install ethiack-job-manager
+        # Construct and execute the command based on inputs
+        - |
+          COMMAND="ethiack-job-manager $[[ inputs.command ]]"
+          if [ -n "$[[ inputs.args ]]" ]; then
+              COMMAND="$COMMAND $[[ inputs.args ]]"
+          fi
+          if [ "$[[ inputs.command ]]" = "launch" ] || [ "$[[ inputs.command ]]" = "check" ]; then
+              if [ -n "$[[ inputs.url ]]" ]; then
+                  COMMAND="$COMMAND $[[ inputs.url ]]"
+              else
+                  echo "Error: URL is required for the $[[ inputs.command ]] command."
+                  exit 1
+              fi
+          fi
+          if [ "$[[ inputs.command ]]" = "cancel" ] || [ "$[[ inputs.command ]]" = "info" ] || [ "$[[ inputs.command ]]" = "status" ] || [ "$[[ inputs.command ]]" = "success" ] || [ "$[[ inputs.command ]]" = "await" ]; then
+              if [ -n "$[[ inputs.uuid ]]" ]; then
+                  COMMAND="$COMMAND $[[ inputs.uuid ]]"
+              else
+                  echo "Error: UUID is required for the $[[ inputs.command ]] command."
+                  exit 1
+              fi
+          fi
+          echo "[ETHIACK-JOB-MANAGER] Executing command: $COMMAND"
+          $COMMAND
+          echo "[ETHIACK-JOB-MANAGER] Finished."
