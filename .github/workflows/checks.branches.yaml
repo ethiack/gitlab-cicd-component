@@ -1,0 +1,11 @@
+name: Checks (branches)
+
+on:
+  push:
+    branches-ignore:    
+    - main
+    - staging
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.base.yaml

@@ -1,0 +1,46 @@
+name: Release
+run-name: "Release `${{ github.ref_name }}` (SHA: ${{ github.sha }})"
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Run Checks
+    uses: ./.github/workflows/checks.base.yaml
+  release:
+    name: Release
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+      - name: Install plugins
+        run: >
+          npm install -D
+          @semantic-release/git
+          @semantic-release/changelog
+          conventional-changelog-conventionalcommits
+          @saithodev/semantic-release-backmerge
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

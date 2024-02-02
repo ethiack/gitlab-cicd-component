@@ -1,0 +1,16 @@
+name: Checks (base)
+  
+on:
+   workflow_call:
+
+jobs:
+  commitlint:
+    name: (check) Commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Run Commitlint
+        uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: .github/configs/commitlint.config.js
