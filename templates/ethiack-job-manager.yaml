@@ -24,6 +24,14 @@ spec:
             type: string
             default: ""
             description: The URL of the target service. Required for commands "launch", and "check".
+        beacon_id:
+            type: string
+            default: ""
+            description: Optional beacon_id for "launch" and "check" commands.
+        event_slug:
+            type: string
+            default: ""
+            description: Optional event_slug for "launch" and "check" commands.
         args:
             type: string
             default: ""
@@ -51,6 +59,16 @@ ethiack-job-manager:
           if [ "$[[ inputs.command ]]" = "launch" ] || [ "$[[ inputs.command ]]" = "check" ]; then
               if [ -n "$[[ inputs.url ]]" ]; then
                   COMMAND="$COMMAND $[[ inputs.url ]]"
+                  
+                  # Add optional beacon_id if provided
+                  if [ -n "$[[ inputs.beacon_id ]]" ]; then
+                      COMMAND="$COMMAND --beacon-id $[[ inputs.beacon_id ]]"
+                  fi
+                  
+                  # Add optional event_slug if provided
+                  if [ -n "$[[ inputs.event_slug ]]" ]; then
+                      COMMAND="$COMMAND --event-slug $[[ inputs.event_slug ]]"
+                  fi
               else
                   echo "Error: URL is required for the $[[ inputs.command ]] command."
                   exit 1
