@@ -1,3 +1,9 @@
+## [1.1.1-rc.1](https://github.com/ethiack/gitlab-cicd-component/compare/1.1.0...1.1.1-rc.1) (2025-08-18)
+
+### 📔 Docs
+
+* updating company legal name ([64181b3](https://github.com/ethiack/gitlab-cicd-component/commit/64181b39fb1fc366f258ee59b96ecf14dea0b06c))
+
 ## [1.1.0](https://github.com/ethiack/gitlab-cicd-component/compare/1.0.0...1.1.0) (2025-04-10)
 
 ### 🦊 CI/CD
