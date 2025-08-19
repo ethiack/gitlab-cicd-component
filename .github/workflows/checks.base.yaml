@@ -13,4 +13,4 @@ jobs:
       - name: Run Commitlint
         uses: wagoid/commitlint-github-action@v6
         with:
-          configFile: .github/configs/commitlint.config.js
+          configFile: .github/configs/commitlint.config.mjs
