@@ -11,6 +11,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Run Commitlint
-        uses: wagoid/commitlint-github-action@v5
+        uses: wagoid/commitlint-github-action@v6
         with:
-          configFile: .github/configs/commitlint.config.js
+          configFile: .github/configs/commitlint.config.mjs
