@@ -16,7 +16,7 @@
 
 <h1>
   <br>
-    <img src="https://raw.githubusercontent.com/ethiack/gitlab-cicd-component/main/assets/logo.webp" alt="logo" width="400">
+    <img src="assets/logo.png" alt="logo" width="400">
     <br><br>
     Ethiack GitLab CI/CD Component
     <br><br>
