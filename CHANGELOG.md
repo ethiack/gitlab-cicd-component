@@ -1,3 +1,14 @@
+## [1.1.2-rc.1](https://github.com/ethiack/gitlab-cicd-component/compare/1.1.1...1.1.2-rc.1) (2025-10-15)
+
+### 📔 Docs
+
+* updating logo ([037d191](https://github.com/ethiack/gitlab-cicd-component/commit/037d19115533838398c373994b0a93e3a0ee8948))
+* updating logo ([7fbd0e9](https://github.com/ethiack/gitlab-cicd-component/commit/7fbd0e977b70143dd6e51748759712eeca920db1))
+
+### 🦊 CI/CD
+
+* bump commitlint version and update config ([#8](https://github.com/ethiack/gitlab-cicd-component/issues/8)) ([c50d972](https://github.com/ethiack/gitlab-cicd-component/commit/c50d972ed436e3c015a910178215dfb35dec9e63))
+
 ## [1.1.1](https://github.com/ethiack/gitlab-cicd-component/compare/1.1.0...1.1.1) (2025-08-18)
 
 ### 📔 Docs
