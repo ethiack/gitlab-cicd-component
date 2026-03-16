@@ -27,6 +27,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Generate GitHub App token
+        id: app-token
+        if: ${{ secrets.ETHIACK_RELEASE_BOT_APP_ID != '' && secrets.ETHIACK_RELEASE_BOT_APP_PRIVATE_KEY != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ETHIACK_RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.ETHIACK_RELEASE_BOT_APP_PRIVATE_KEY }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -42,5 +49,5 @@ jobs:
         run: npm audit signatures
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
         run: npx semantic-release
